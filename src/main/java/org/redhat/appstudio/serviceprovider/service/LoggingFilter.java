@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.appstudio.serviceprovider.service;
+package org.redhat.appstudio.serviceprovider.service;
 
 import io.vertx.core.http.HttpServerRequest;
 import javax.ws.rs.container.ContainerRequestContext;

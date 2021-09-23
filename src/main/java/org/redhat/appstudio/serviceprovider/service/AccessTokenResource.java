@@ -10,10 +10,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.appstudio.serviceprovider.service;
+package org.redhat.appstudio.serviceprovider.service;
 
-import static org.appstudio.serviceprovider.service.dto.DtoConverter.asDto;
-import static org.appstudio.serviceprovider.service.dto.DtoConverter.asToken;
+import static org.redhat.appstudio.serviceprovider.service.dto.DtoConverter.asDto;
+import static org.redhat.appstudio.serviceprovider.service.dto.DtoConverter.asToken;
 
 import com.google.common.base.Strings;
 import java.util.Optional;
@@ -31,10 +31,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
-import org.appstudio.serviceprovider.service.dto.DtoConverter;
-import org.appstudio.serviceprovider.service.storage.AccessToken;
-import org.appstudio.serviceprovider.service.storage.AccessTokenService;
+import org.redhat.appstudio.serviceprovider.service.dto.AccessTokenDto;
+import org.redhat.appstudio.serviceprovider.service.dto.DtoConverter;
+import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
+import org.redhat.appstudio.serviceprovider.service.storage.AccessTokenService;
 
 @Path("token")
 public class AccessTokenResource {

@@ -10,9 +10,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.appstudio.serviceprovider.service.dto;
+package org.redhat.appstudio.serviceprovider.service.dto;
 
-import org.appstudio.serviceprovider.service.storage.AccessToken;
+import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
 
 public class DtoConverter {
   public static AccessTokenDto asDto(AccessToken accessToken) {

@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.appstudio.serviceprovider.service;
+package org.redhat.appstudio.serviceprovider.service;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
@@ -25,9 +25,9 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.redhat.appstudio.serviceprovider.service.dto.AccessTokenDto;
 
 @QuarkusTest
 public class AccessTokenResourceTest {

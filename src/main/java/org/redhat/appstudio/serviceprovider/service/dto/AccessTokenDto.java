@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.appstudio.serviceprovider.service.dto;
+package org.redhat.appstudio.serviceprovider.service.dto;
 
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
