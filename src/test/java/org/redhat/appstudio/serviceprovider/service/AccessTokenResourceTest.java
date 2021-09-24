@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,6 +26,9 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import java.util.Arrays;
+import java.util.List;
+import org.jboss.resteasy.api.validation.ResteasyConstraintViolation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.dto.AccessTokenDto;
@@ -208,42 +212,38 @@ public class AccessTokenResourceTest {
             .extract()
             .response();
   }
-  //
-  //  @Test
-  //  @DisplayName("Test Invalid Request")
-  //  public void test_invalidRequest() {
-  //    try {
-  //      // Create Catalogue Item via JsonObject
-  //      ObjectMapper mapper = new ObjectMapper();
-  //      JsonNode rootNode = mapper.createObjectNode();
-  //      ((ObjectNode) rootNode).put("name", "INVALID");
-  //      ((ObjectNode) rootNode).put("sku", prepareRandomSKUNumber());
-  //      ((ObjectNode) rootNode).put("price", "INVALID");
-  //
-  //      String catalogueItem =
-  // mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-  //
-  //      Response response =
-  //              given()
-  //                      .contentType("application/json")
-  //                      .body(catalogueItem)
-  //                      .post("/")
-  //                      .then()
-  //                      .assertThat().spec(prepareResponseSpec(400))
-  //                      .and()
-  //                      .extract().response();
-  //
-  //      List<Error> errors = Arrays.asList(response.getBody().jsonPath().getObject("errors",
-  // Error[].class));
-  //
-  //      assertTrue(errors != null && errors.size() > 0);
-  //
-  //      assertTrue(errors.get(0).getMessage().equalsIgnoreCase("Invalid Request"));
-  //    }
-  //    catch(Exception e) {
-  //      fail("Error occurred while testing invalid request", e);
-  //    }
-  //  }
+
+  @Test
+  @DisplayName("Test Invalid Request")
+  public void test_invalidRequest() {
+    try {
+      Response response =
+          given()
+              .contentType("application/json")
+              .body("{\"foo\" : \"bar\"}".getBytes())
+              .post("api/v1/token")
+              .then()
+              .assertThat()
+              .spec(prepareResponseSpec(400))
+              .and()
+              .extract()
+              .response();
+
+      List<ResteasyConstraintViolation> parameterViolations =
+          Arrays.asList(
+              response
+                  .getBody()
+                  .jsonPath()
+                  .getObject("parameterViolations", ResteasyConstraintViolation[].class));
+
+      assertTrue(parameterViolations != null && parameterViolations.size() > 0);
+
+      assertTrue(
+          parameterViolations.get(0).getMessage().equalsIgnoreCase("token may not be blank"));
+    } catch (Exception e) {
+      fail("Error occurred while testing invalid request", e);
+    }
+  }
 
   private ResponseSpecification prepareResponseSpec(int responseStatus) {
     return new ResponseSpecBuilder().expectStatusCode(responseStatus).build();

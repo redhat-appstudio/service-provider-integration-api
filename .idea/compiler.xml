@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="sp-service" />
+        <module name="service-provider-integration-api" />
       </profile>
     </annotationProcessing>
   </component>
