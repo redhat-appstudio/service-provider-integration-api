@@ -31,4 +31,4 @@ jobs:
         distribution: 'adopt'
         java-version: '11.0.11+9'
     - name: Build with Maven
-      run: mvn -B clean install -U -Pintegration
+      run: mvn -B clean install -U
