@@ -31,7 +31,7 @@
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>2.2.2.Final</quarkus.platform.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
-        <version.enforcer.plugin>3.0.0-M3</version.enforcer.plugin>
+        <version.enforcer.plugin>3.0.0</version.enforcer.plugin>
         <version.fmt.plugin>2.12</version.fmt.plugin>
         <version.license-maven-plugin>4.1</version.license-maven-plugin>
         <version.sortpom.plugin>3.0.0</version.sortpom.plugin>
