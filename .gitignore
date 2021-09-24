@@ -9,3 +9,29 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+
+# Eclipse  #
+###################
+
+*.launch
+.classpath
+.project
+.settings/
+target/
+bin/
+test-output/
+maven-eclipse.xml
+.factorypath
+
+# Theia #
+##################
+.theia/
+
+# Idea #
+##################
+*.iml
+*.ipr
+*.iws
+.idea/
+
+.vscode/
