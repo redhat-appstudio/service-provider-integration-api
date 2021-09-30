@@ -45,7 +45,7 @@ class TokenServiceProducerTest {
       producer.produceAccessTokenService();
       fail();
     } catch (ConfigurationException e) {
-      //ok
+      // ok
     }
   }
 }
