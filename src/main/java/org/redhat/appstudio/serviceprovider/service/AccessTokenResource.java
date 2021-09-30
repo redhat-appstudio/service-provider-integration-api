@@ -38,7 +38,6 @@ import org.redhat.appstudio.serviceprovider.service.storage.AccessTokenService;
 
 @Path("token")
 public class AccessTokenResource {
-
   @Inject AccessTokenService accessTokenService;
 
   @GET

@@ -19,13 +19,20 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+/** Produces token service instance depending of configuration. */
 @ApplicationScoped
 public class TokenServiceProducer {
 
-  @ConfigProperty(name = "spi.backend.type")
-  String backendType;
+  private final String backendType;
+  private final VaultKVSecretEngine kvSecretEngine;
 
-  @Inject VaultKVSecretEngine kvSecretEngine;
+  @Inject
+  public TokenServiceProducer(
+      VaultKVSecretEngine kvSecretEngine,
+      @ConfigProperty(name = "spi.backend.type") String backendType) {
+    this.kvSecretEngine = kvSecretEngine;
+    this.backendType = backendType;
+  }
 
   @Produces
   @ApplicationScoped
@@ -33,7 +40,7 @@ public class TokenServiceProducer {
     if (backendType.equals("vault")) {
       return new VaultAccessTokenService(kvSecretEngine);
     } else if (backendType.equals("inmemory")) {
-      return new InmenmoryAccessTokenService();
+      return new InmemoryAccessTokenService();
     } else {
       throw new ConfigurationException(
           "Unknown or empty backend provider. Check 'spi.backend.type' property.");

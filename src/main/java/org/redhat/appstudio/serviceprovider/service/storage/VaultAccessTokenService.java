@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
 
+/** Vault-based implementation of tokens storage. */
 public class VaultAccessTokenService implements AccessTokenService {
 
   private static final Logger LOG = Logger.getLogger(VaultAccessTokenService.class);
@@ -32,14 +33,14 @@ public class VaultAccessTokenService implements AccessTokenService {
   }
 
   public Set<AccessToken> fetchAll() {
-    LOG.info("fetchAll");
+    LOG.debug("fetchAll");
     return kvSecretEngine.listSecrets(vaultPath).stream()
         .map(s -> AccessToken.fromKVMap(kvSecretEngine.readSecret(vaultPath + "/" + s)))
         .collect(Collectors.toSet());
   }
 
   public Optional<AccessToken> get(String name) {
-    LOG.info(name);
+    LOG.debug("Get by name:" + name);
     try {
       return Optional.of(AccessToken.fromKVMap(kvSecretEngine.readSecret(vaultPath + "/" + name)));
     } catch (VaultClientException e) {
@@ -48,18 +49,18 @@ public class VaultAccessTokenService implements AccessTokenService {
   }
 
   public AccessToken create(AccessToken accessToken) {
-    LOG.info(accessToken);
+    LOG.debug("Create token: " + accessToken.toString());
     kvSecretEngine.writeSecret(vaultPath + "/" + accessToken.getName(), accessToken.asKVMap());
     return accessToken;
   }
 
   public void update(String name, AccessToken accessToken) {
-    LOG.info(accessToken);
+    LOG.debug("Update token: " + accessToken.toString());
     kvSecretEngine.writeSecret(vaultPath + "/" + name, accessToken.asKVMap());
   }
 
   public void delete(String name) {
-    LOG.info(name);
+    LOG.debug("Delete token: " + name);
     kvSecretEngine.deleteSecret(vaultPath + "/" + name);
   }
 }

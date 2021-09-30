@@ -20,34 +20,35 @@ import java.util.Optional;
 import java.util.Set;
 import org.jboss.logging.Logger;
 
-public class InmenmoryAccessTokenService implements AccessTokenService {
-  private static final Logger LOG = Logger.getLogger(InmenmoryAccessTokenService.class);
+/** In-memory tokens storage implementation. */
+public class InmemoryAccessTokenService implements AccessTokenService {
+  private static final Logger LOG = Logger.getLogger(InmemoryAccessTokenService.class);
 
   private Map<String, AccessToken> tokens = Collections.synchronizedMap(new LinkedHashMap<>());
 
   public Set<AccessToken> fetchAll() {
-    LOG.info("fetchAll");
+    LOG.debug("fetchAll");
     return new HashSet<>(tokens.values());
   }
 
   public Optional<AccessToken> get(String name) {
-    LOG.info(name);
+    LOG.debug("Get by name:" + name);
     return Optional.ofNullable(tokens.get(name));
   }
 
   public AccessToken create(AccessToken accessToken) {
-    LOG.info(accessToken);
+    LOG.debug("Create token: " + accessToken.toString());
     tokens.put(accessToken.getName(), accessToken);
     return accessToken;
   }
 
   public void update(String name, AccessToken accessTokenDto) {
-    LOG.info(accessTokenDto);
+    LOG.debug("Update token: " + accessTokenDto.toString());
     tokens.replace(name, accessTokenDto);
   }
 
   public void delete(String name) {
-    LOG.info(name);
+    LOG.debug("Delete token: " + name);
     tokens.remove(name);
   }
 }
