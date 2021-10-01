@@ -12,7 +12,6 @@
  */
 package org.redhat.appstudio.serviceprovider.service.storage;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class AccessToken {
@@ -150,27 +149,5 @@ public class AccessToken {
         + name
         + '\''
         + '}';
-  }
-
-  public Map<String, String> asKVMap() {
-    return Map.of(
-        "name", name,
-        "token", token,
-        "serviceProviderUrl", serviceProviderUrl,
-        "serviceProviderUserName", serviceProviderUserName,
-        "serviceProviderUserId", serviceProviderUserId,
-        "userId", userId,
-        "expiredAfter", Integer.toString(expiredAfter));
-  }
-
-  public static AccessToken fromKVMap(Map<String, String> source) {
-    return new AccessToken(
-        source.get("token"),
-        source.get("name"),
-        source.get("serviceProviderUrl"),
-        source.get("serviceProviderUserName"),
-        source.get("serviceProviderUserId"),
-        source.get("userId"),
-        Integer.parseInt(source.get("expiredAfter")));
   }
 }

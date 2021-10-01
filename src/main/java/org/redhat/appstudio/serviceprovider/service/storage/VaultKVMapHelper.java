@@ -12,19 +12,20 @@
  */
 package org.redhat.appstudio.serviceprovider.service.storage;
 
-import java.util.Optional;
-import java.util.Set;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 
-/** Access token backend operations interface. */
-public interface AccessTokenService {
+/** Helps to convert {@code AccessToken} instances to/from Key-Value maps used for Vault storage. */
+public class VaultKVMapHelper {
 
-  Set<AccessToken> fetchAll();
+  ObjectMapper mapper = new ObjectMapper();
 
-  Optional<AccessToken> get(String name);
+  public Map<String, String> asKVMap(AccessToken accessToken) {
+    return mapper.convertValue(accessToken, new TypeReference<>() {});
+  }
 
-  AccessToken create(AccessToken accessToken);
-
-  void update(String name, AccessToken accessTokenDto);
-
-  void delete(String name);
+  public AccessToken fromKVMap(Map<String, String> kvMap) {
+    return mapper.convertValue(kvMap, AccessToken.class);
+  }
 }
