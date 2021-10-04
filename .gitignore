@@ -1,3 +1,14 @@
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+*/overlays
+*~
+.directory
+
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
