@@ -18,30 +18,30 @@ import static org.junit.jupiter.api.Assertions.fail;
 import io.quarkus.runtime.configuration.ConfigurationException;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
-import io.quarkus.vault.VaultKVSecretEngine;
+import io.quarkus.vault.runtime.VaultKvManager;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class TokenServiceProducerTest {
 
-  @InjectMock VaultKVSecretEngine kvSecretEngine;
+  @InjectMock VaultKvManager vaultKvManager;
 
   @Test
   void produceInmemoryAccessTokenService() {
-    TokenServiceProducer producer = new TokenServiceProducer(kvSecretEngine, "inmemory");
+    TokenServiceProducer producer = new TokenServiceProducer(vaultKvManager, "inmemory");
     assertTrue(producer.produceAccessTokenService() instanceof InmemoryAccessTokenService);
   }
 
   @Test
   void produceVaultAccessTokenService() {
-    TokenServiceProducer producer = new TokenServiceProducer(kvSecretEngine, "vault");
+    TokenServiceProducer producer = new TokenServiceProducer(vaultKvManager, "vault");
     assertTrue(producer.produceAccessTokenService() instanceof VaultAccessTokenService);
   }
 
   @Test()
   void produceExceptionOnBadConfigurationValue() {
     try {
-      TokenServiceProducer producer = new TokenServiceProducer(kvSecretEngine, "foo");
+      TokenServiceProducer producer = new TokenServiceProducer(vaultKvManager, "foo");
       producer.produceAccessTokenService();
       fail();
     } catch (ConfigurationException e) {
