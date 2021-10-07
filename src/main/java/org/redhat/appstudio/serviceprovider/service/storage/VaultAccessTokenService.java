@@ -12,7 +12,7 @@
  */
 package org.redhat.appstudio.serviceprovider.service.storage;
 
-import io.quarkus.vault.VaultKVSecretEngine;
+import io.quarkus.vault.runtime.VaultKvManager;
 import io.quarkus.vault.runtime.client.VaultClientException;
 import java.util.Collections;
 import java.util.Optional;
@@ -25,21 +25,21 @@ public class VaultAccessTokenService implements AccessTokenService {
 
   private static final Logger LOG = Logger.getLogger(VaultAccessTokenService.class);
 
-  private final VaultKVSecretEngine kvSecretEngine;
+  private final VaultKvManager vaultKvManager;
 
   private final VaultKVMapHelper kvMapHelper = new VaultKVMapHelper();
 
   private final String vaultPath = "spi/accesstokens";
 
-  public VaultAccessTokenService(VaultKVSecretEngine kvSecretEngine) {
-    this.kvSecretEngine = kvSecretEngine;
+  public VaultAccessTokenService(VaultKvManager vaultKvManager) {
+    this.vaultKvManager = vaultKvManager;
   }
 
   public Set<AccessToken> fetchAll() {
     LOG.debug("fetchAll");
     try {
-      return kvSecretEngine.listSecrets(vaultPath).stream()
-          .map(s -> kvMapHelper.fromKVMap(kvSecretEngine.readSecret(vaultPath + "/" + s)))
+      return vaultKvManager.listSecrets(vaultPath).stream()
+          .map(s -> kvMapHelper.fromKVMap(vaultKvManager.readSecret(vaultPath + "/" + s)))
           .collect(Collectors.toSet());
     } catch (VaultClientException e) {
       return Collections.emptySet();
@@ -49,7 +49,7 @@ public class VaultAccessTokenService implements AccessTokenService {
   public Optional<AccessToken> get(String name) {
     LOG.debug("Get by name:" + name);
     try {
-      return Optional.of(kvMapHelper.fromKVMap(kvSecretEngine.readSecret(vaultPath + "/" + name)));
+      return Optional.of(kvMapHelper.fromKVMap(vaultKvManager.readSecret(vaultPath + "/" + name)));
     } catch (VaultClientException e) {
       return Optional.empty();
     }
@@ -57,18 +57,18 @@ public class VaultAccessTokenService implements AccessTokenService {
 
   public AccessToken create(AccessToken accessToken) {
     LOG.debug("Create token: " + accessToken.toString());
-    kvSecretEngine.writeSecret(
+    vaultKvManager.writeSecret(
         vaultPath + "/" + accessToken.getName(), kvMapHelper.asKVMap(accessToken));
     return accessToken;
   }
 
   public void update(String name, AccessToken accessToken) {
     LOG.debug("Update token: " + accessToken.toString());
-    kvSecretEngine.writeSecret(vaultPath + "/" + name, kvMapHelper.asKVMap(accessToken));
+    vaultKvManager.writeSecret(vaultPath + "/" + name, kvMapHelper.asKVMap(accessToken));
   }
 
   public void delete(String name) {
     LOG.debug("Delete token: " + name);
-    kvSecretEngine.deleteSecret(vaultPath + "/" + name);
+    vaultKvManager.deleteSecret(vaultPath + "/" + name);
   }
 }
