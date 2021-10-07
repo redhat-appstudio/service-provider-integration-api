@@ -87,7 +87,7 @@ class VaultAccessTokenServiceTest {
     final Map<String, String> tokenMap = tokenAsMap(secretName);
     vaultKvManager.writeSecret(vaultPath + "/" + secretName, tokenMap);
 
-    //Modify Map
+    // Modify Map
     Map<String, String> modified = new HashMap<>(tokenMap);
     modified.put("token", "123foo");
     modified.put("serviceProviderUrl", "https://gitlab.com");
