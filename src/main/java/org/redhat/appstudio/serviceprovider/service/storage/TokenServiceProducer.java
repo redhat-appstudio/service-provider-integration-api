@@ -13,7 +13,7 @@
 package org.redhat.appstudio.serviceprovider.service.storage;
 
 import io.quarkus.runtime.configuration.ConfigurationException;
-import io.quarkus.vault.VaultKVSecretEngine;
+import io.quarkus.vault.runtime.VaultKvManager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -24,13 +24,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class TokenServiceProducer {
 
   private final String backendType;
-  private final VaultKVSecretEngine kvSecretEngine;
+  private final VaultKvManager vaultKvManager;
 
   @Inject
   public TokenServiceProducer(
-      VaultKVSecretEngine kvSecretEngine,
+      VaultKvManager vaultKvManager,
       @ConfigProperty(name = "spi.backend.type") String backendType) {
-    this.kvSecretEngine = kvSecretEngine;
+    this.vaultKvManager = vaultKvManager;
     this.backendType = backendType;
   }
 
@@ -38,7 +38,7 @@ public class TokenServiceProducer {
   @ApplicationScoped
   public AccessTokenService produceAccessTokenService() {
     if (backendType.equals("vault")) {
-      return new VaultAccessTokenService(kvSecretEngine);
+      return new VaultAccessTokenService(vaultKvManager);
     } else if (backendType.equals("inmemory")) {
       return new InmemoryAccessTokenService();
     } else {
