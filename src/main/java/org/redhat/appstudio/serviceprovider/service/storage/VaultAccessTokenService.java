@@ -29,7 +29,7 @@ public class VaultAccessTokenService implements AccessTokenService {
 
   private final VaultKVMapHelper kvMapHelper = new VaultKVMapHelper();
 
-  private final String vaultPath = "spi/accesstokens";
+  private final String vaultPath = "accesstokens";
 
   public VaultAccessTokenService(VaultKvManager vaultKvManager) {
     this.vaultKvManager = vaultKvManager;

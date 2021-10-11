@@ -18,11 +18,12 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.logging.Logger;
 
 /** Produces token service instance depending of configuration. */
 @ApplicationScoped
 public class TokenServiceProducer {
-
+  private static final Logger LOG = Logger.getLogger(TokenServiceProducer.class);
   private final String backendType;
   private final VaultKvManager vaultKvManager;
 
@@ -37,6 +38,7 @@ public class TokenServiceProducer {
   @Produces
   @ApplicationScoped
   public AccessTokenService produceAccessTokenService() {
+    LOG.info(backendType);
     if (backendType.equals("vault")) {
       return new VaultAccessTokenService(vaultKvManager);
     } else if (backendType.equals("inmemory")) {
