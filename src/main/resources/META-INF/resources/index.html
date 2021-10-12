@@ -2,62 +2,151 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>sp-service - 1.0.0-SNAPSHOT</title>
-    <script src="/js/rest-client.js"></script>
+    <title>Demo-page(sp-service - 1.0.0-SNAPSHOT)</title>
+    <style>
+        body {
+            font: normal 16px Verdana, Arial, sans-serif;
+        }
+
+        table {
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-collapse: separate;
+            border-left: 0;
+            border-radius: 4px;
+            border-spacing: 0px;
+        }
+        tr {
+            display: table-row;
+            vertical-align: inherit;
+            border-color: inherit;
+        }
+        th, td {
+            padding: 5px 4px 6px 4px;
+            text-align: left;
+            vertical-align: top;
+            border-left: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #d9d9d9;
+            border-top: none;
+        }
+
+        td {
+            border-top: 1px solid #ddd;
+        }
+
+        td:hover {
+           background-color: #dde6ee;
+        }
+
+        button { margin-left: 3px; }
+
+}
+    </style>
+    <script src="/js/rest-client.min.js"></script>
     <script>
+        var api;
         window.onload = function () {
-            var api = new RestClient('http://localhost:8080/api/v1');
+            api = new RestClient('http://localhost:8080/api/v1');
             api.res('token');
 
             // test we're ok
-            findAllTokens(api).then((tokens) => {
-               document.write("<font color='green'><b> We are ok. Tokens found: " + tokens.length + "</b></font><br/>");
-               var table = document.createElement("table");
-               table.setAttribute("border", "1");
-               setTableHeader(Object.keys(tokens[0]), table)
-               setTableData(tokens, table);
-               document.body.appendChild(table);
+            findAllTokens().then((tokens) => {
+               if (tokens.length > 0) {
+                   var table = document.createElement("table");
+                   setTableHeader(Object.keys(tokens[0]), table)
+                   setTableData(tokens, table, api);
+                   document.body.insertBefore(table, document.body.firstChild);;
+               }
+
+               var text = document.createElement("span");
+               text.innerText = "We are ok. Tokens found: " + tokens.length;
+               text.setAttribute('style', 'font-weight: bold; color: green;');
+               document.body.prepend(text);
+
             });
         };
 
         const setTableHeader = function(fields, table) {
-            console.log(fields);
             const thead = document.createElement("thead");
             thead.id = 'tableThead';
             const tr = document.createElement("tr");
             const fragment = document.createDocumentFragment();
-            fields.forEach(x => {
+            fields.forEach(f => {
                 const th = document.createElement("th");
-                th.innerText = x;
+                th.innerText = f;
                 th.scope = "col";
                 fragment.appendChild(th);
             });
+            const th = document.createElement("th");
+                th.innerText = "Actions";
+                th.scope = "col";
+                fragment.appendChild(th);
             tr.appendChild(fragment);
             thead.appendChild(tr);
             table.appendChild(thead);
         };
 
         const setTableData = function(tokens, table) {
-            //console.log(fields);
             const tbody = document.createElement("tbody");
             tbody.id = 'tableTbody';
-            tokens.forEach(x => {
+            tokens.forEach(t => {
                 const tr = document.createElement("tr");
                 const fragment = document.createDocumentFragment();
                 const keys = Object.keys(tokens[0])
                 keys.forEach(key => {
                     td = document.createElement("td");
-                    td.innerText = x[key];
+                    td.innerText = t[key];
                     fragment.appendChild(td);
                 });
+
+                // Delete & edit buttons
+                td = document.createElement("td");
+                edt_btn = document.createElement("button")
+                edt_btn.innerHTML = "Edit"
+                edt_btn.addEventListener('click',function(){
+                    alert("not implemented");
+                },false);
+                td.appendChild(edt_btn);
+                del_btn = document.createElement("button")
+                del_btn.innerHTML = "Delete"
+                del_btn.addEventListener('click',function(){
+                    deleteToken(t.name);
+                    location.reload();
+                },false);
+                td.appendChild(del_btn);
+
+                fragment.appendChild(td);
                 tr.appendChild(fragment);
                 tbody.appendChild(tr);
                 table.appendChild(tbody);
             })
         };
 
+        openSpoiler = function (elem) {
+              document.getElementById('spoiler').style.display='block';
+              document.getElementById('but_spo').style.display='none';
+         }
 
-        findAllTokens = async function (api) {
+         closeSpoiler = function (elem)  {
+              document.getElementById('spoiler').style.display='none';
+              document.getElementById('but_spo').style.display='block';
+         }
+
+         submit_token = async function () {
+           var token = {
+              token: document.getElementById('t_value').value,
+              name: document.getElementById('t_name').value,
+              serviceProviderUrl: document.getElementById('t_url').value
+           };
+           await createToken(token);
+           location.reload();
+         }
+
+        <!-- API Methods -->
+        findAllTokens = async function () {
             const token_definitions = await api.token().get();
             const token_promises = token_definitions.map(async (token_def) => {
                 return api.token(token_def.name).get();
@@ -65,23 +154,33 @@
             return await Promise.all(token_promises);
         };
 
-        deleteToken = async function (api, token_name) {
-            return api.token(token_name).delete();
+        deleteToken = async function (token_name) {
+            return await api.token(token_name).delete();
         };
 
-        getToken = async function (api, token_name) {
-            return api.token(token_name).get();
+        getToken = async function (token_name) {
+            return await api.token(token_name).get();
         };
 
-        createToken = async function (api, token) {
-            return api.token(token_name).post(token);
+        createToken = async function (token) {
+            return await api.token().post(token);
         };
 
-        updateToken = async function (api, token) {
-            return api.token(token.name).put(token);
+        updateToken = async function (token) {
+            return await api.token(token.name).put(token);
         };
     </script>
 </head>
 <body>
+  <hr>
+  <input type="button" value="New token" id="but_spo" onclick="openSpoiler(this)" />
+    <div id="spoiler" style="display:none">
+        <p>Token name: <input type="text" id="t_name"></p>
+        <p>Token value: <input type="text" id="t_value"></p>
+        <p>Provider URL: <input type="text" id="t_url"></p>
+
+        <input type="button" value="Submit" onclick="submit_token()" />
+        <input type="button" value="Hide" onclick="closeSpoiler(this)" /><br>
+    </div>
 </body>
 </html>
