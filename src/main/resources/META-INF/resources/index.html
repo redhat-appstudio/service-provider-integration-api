@@ -3,174 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <title>sp-service - 1.0.0-SNAPSHOT</title>
-    <style>
-        h1, h2, h3, h4, h5, h6 {
-            margin-bottom: 0.5rem;
-            font-weight: 400;
-            line-height: 1.5;
-        }
+    <script src="/js/rest-client.js"></script>
+    <script>
+        window.onload = function () {
+            var api = new RestClient('http://localhost:8080/api/v1');
+            api.res('token');
 
-        h1 {
-            font-size: 2.5rem;
-        }
+            // test we're ok
+            findAllTokens(api).then((tokens) => {
+               document.write("<font color='green'><b> We are ok. Tokens found: " + tokens.length + "</b></font><br/>");
+               var table = document.createElement("table");
+               table.setAttribute("border", "1");
+               setTableHeader(Object.keys(tokens[0]), table)
+               setTableData(tokens, table);
+               document.body.appendChild(table);
+            });
+        };
 
-        h2 {
-            font-size: 2rem
-        }
+        const setTableHeader = function(fields, table) {
+            console.log(fields);
+            const thead = document.createElement("thead");
+            thead.id = 'tableThead';
+            const tr = document.createElement("tr");
+            const fragment = document.createDocumentFragment();
+            fields.forEach(x => {
+                const th = document.createElement("th");
+                th.innerText = x;
+                th.scope = "col";
+                fragment.appendChild(th);
+            });
+            tr.appendChild(fragment);
+            thead.appendChild(tr);
+            table.appendChild(thead);
+        };
 
-        h3 {
-            font-size: 1.75rem
+        const setTableData = function(tokens, table) {
+            //console.log(fields);
+            const tbody = document.createElement("tbody");
+            tbody.id = 'tableTbody';
+            tokens.forEach(x => {
+                const tr = document.createElement("tr");
+                const fragment = document.createDocumentFragment();
+                const keys = Object.keys(tokens[0])
+                keys.forEach(key => {
+                    td = document.createElement("td");
+                    td.innerText = x[key];
+                    fragment.appendChild(td);
+                });
+                tr.appendChild(fragment);
+                tbody.appendChild(tr);
+                table.appendChild(tbody);
+            })
+        };
 
-        }
 
-        h4 {
-            font-size: 1.5rem
-        }
+        findAllTokens = async function (api) {
+            const token_definitions = await api.token().get();
+            const token_promises = token_definitions.map(async (token_def) => {
+                return api.token(token_def.name).get();
+            });
+            return await Promise.all(token_promises);
+        };
 
-        h5 {
-            font-size: 1.25rem
-        }
+        deleteToken = async function (api, token_name) {
+            return api.token(token_name).delete();
+        };
 
-        h6 {
-            font-size: 1rem
-        }
+        getToken = async function (api, token_name) {
+            return api.token(token_name).get();
+        };
 
-        .lead {
-            font-weight: 300;
-            font-size: 2rem;
-        }
+        createToken = async function (api, token) {
+            return api.token(token_name).post(token);
+        };
 
-        .banner {
-            font-size: 2.7rem;
-            margin: 0;
-            padding: 2rem 1rem;
-            background-color: #0d1c2c;
-            color: white;
-        }
-
-        body {
-            margin: 0;
-            font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-
-        code {
-            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 87.5%;
-            color: #e83e8c;
-            word-break: break-word;
-        }
-
-        .left-column {
-            padding: .75rem;
-            max-width: 75%;
-            min-width: 55%;
-        }
-
-        .right-column {
-            padding: .75rem;
-            max-width: 25%;
-        }
-
-        .container {
-            display: flex;
-            width: 100%;
-        }
-
-        li {
-            margin: 0.75rem;
-        }
-
-        .right-section {
-            margin-left: 1rem;
-            padding-left: 0.5rem;
-        }
-
-        .right-section h3 {
-            padding-top: 0;
-            font-weight: 200;
-        }
-
-        .right-section ul {
-            border-left: 0.3rem solid #71aeef;
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .provided-code {
-            border-left: 0.3rem solid #71aeef;
-            padding-left: 10px;
-        }
-
-        .provided-code h3 {
-            font-weight: 200;
-        }
-    </style>
+        updateToken = async function (api, token) {
+            return api.token(token.name).put(token);
+        };
+    </script>
 </head>
 <body>
-
-<div class="banner lead">
-    Your new Cloud-Native application is ready!
-</div>
-
-<div class="container">
-    <div class="left-column">
-        <p class="lead"> Congratulations, you have created a new Quarkus cloud application.</p>
-
-        <h2>What is this page?</h2>
-
-        <p>This page is served by Quarkus. The source is in
-            <code>src/main/resources/META-INF/resources/index.html</code>.</p>
-
-        <h2>What are your next steps?</h2>
-
-        <p>If not already done, run the application in <em>dev mode</em> using: <code>./mvnw compile quarkus:dev</code>.
-        </p>
-        <ul>
-            <li>Your static assets are located in <code>src/main/resources/META-INF/resources</code>.</li>
-            <li>Configure your application in <code>src/main/resources/application.properties</code>.</li>
-            <li>Quarkus now ships with a <a href="/q/dev/">Dev UI</a> (available in dev mode only)</li>
-            <li>Play with the provided code located in <code>src/main/java</code>:</li>
-        </ul>
-                <div class="provided-code">
-            <h3>RESTEasy JAX-RS</h3>
-            <p>Easily start your RESTful Web Services</p>
-            <p><code>@Path: <a href="/hello" class="path-link" target="_blank">/hello</a></code></p>
-            <p><a href="https://quarkus.io/guides/getting-started#the-jax-rs-resources" class="guide-link" target="_blank">Related guide section...</a></p>
-        </div>
-
-    </div>
-    <div class="right-column">
-        <div class="right-section">
-            <h3>Application</h3>
-            <ul>
-                <li>GroupId: <code>org.acme</code></li>
-                <li>ArtifactId: <code>sp-service</code></li>
-                <li>Version: <code>1.0.0-SNAPSHOT</code></li>
-                <li>Quarkus Version: <code>2.2.2.Final</code></li>
-            </ul>
-        </div>
-        <div class="right-section">
-            <h3>Do you like Quarkus?</h3>
-            <ul>
-                <li>Go give it a star on <a href="https://github.com/quarkusio/quarkus">GitHub</a>.</li>
-            </ul>
-        </div>
-        <div class="right-section">
-            <h3>Selected extensions guides</h3>
-            <ul>
-                <li title="REST endpoint framework implementing JAX-RS and more"><a href="https://quarkus.io/guides/rest-json" target="_blank">RESTEasy JAX-RS guide</a></li>
-            </ul>
-        </div>
-        <div class="right-section">
-            <h3>More reading</h3>
-            <ul>
-                <li><a href="https://quarkus.io/guides/maven-tooling.html" target="_blank">Setup your IDE</a></li>
-                <li><a href="https://quarkus.io/guides/getting-started.html" target="_blank">Getting started</a></li>
-                <li><a href="https://quarkus.io/guides/" target="_blank">All guides</a></li>
-                <li><a href="https://quarkus.io" target="_blank">Quarkus Web Site</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
 </body>
 </html>
