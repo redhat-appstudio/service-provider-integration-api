@@ -23,6 +23,16 @@ public class AccessTokenDto {
   @Pattern(regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?")
   private String name;
 
+  private String serviceProviderUrl;
+
+  private String serviceProviderUserName;
+
+  private String serviceProviderUserId;
+
+  private String userId;
+
+  private Integer expiredAfter;
+
   public AccessTokenDto() {}
 
   public AccessTokenDto(String token, String name) {
@@ -38,6 +48,11 @@ public class AccessTokenDto {
     this.token = token;
   }
 
+  public AccessTokenDto withToken(String token) {
+    this.token = token;
+    return this;
+  }
+
   public String getName() {
     return name;
   }
@@ -46,21 +61,126 @@ public class AccessTokenDto {
     this.name = name;
   }
 
+  public AccessTokenDto withName(String name) {
+    this.name = name;
+    return this;
+  }
+
+  public String getServiceProviderUrl() {
+    return serviceProviderUrl;
+  }
+
+  public void setServiceProviderUrl(String serviceProviderUrl) {
+    this.serviceProviderUrl = serviceProviderUrl;
+  }
+
+  public AccessTokenDto withServiceProviderUrl(String serviceProviderUrl) {
+    this.serviceProviderUrl = serviceProviderUrl;
+    return this;
+  }
+
+  public String getServiceProviderUserName() {
+    return serviceProviderUserName;
+  }
+
+  public void setServiceProviderUserName(String serviceProviderUserName) {
+    this.serviceProviderUserName = serviceProviderUserName;
+  }
+
+  public AccessTokenDto withServiceProviderUserName(String serviceProviderUserName) {
+    this.serviceProviderUserName = serviceProviderUserName;
+    return this;
+  }
+
+  public String getServiceProviderUserId() {
+    return serviceProviderUserId;
+  }
+
+  public void setServiceProviderUserId(String serviceProviderUserId) {
+    this.serviceProviderUserId = serviceProviderUserId;
+  }
+
+  public AccessTokenDto withServiceProviderUserId(String serviceProviderUserId) {
+    this.serviceProviderUserId = serviceProviderUserId;
+    return this;
+  }
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public AccessTokenDto withUserId(String userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  public Integer getExpiredAfter() {
+    return expiredAfter;
+  }
+
+  public void setExpiredAfter(Integer expiredAfter) {
+    this.expiredAfter = expiredAfter;
+  }
+
+  public AccessTokenDto withExpiredAfter(Integer expiredAfter) {
+    this.expiredAfter = expiredAfter;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     AccessTokenDto that = (AccessTokenDto) o;
-    return Objects.equals(token, that.token) && Objects.equals(name, that.name);
+    return Objects.equals(token, that.token)
+        && Objects.equals(serviceProviderUrl, that.serviceProviderUrl)
+        && Objects.equals(serviceProviderUserName, that.serviceProviderUserName)
+        && Objects.equals(serviceProviderUserId, that.serviceProviderUserId)
+        && Objects.equals(userId, that.userId)
+        && Objects.equals(expiredAfter, that.expiredAfter)
+        && Objects.equals(name, that.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(token, name);
+    return Objects.hash(
+        token,
+        serviceProviderUrl,
+        serviceProviderUserName,
+        serviceProviderUserId,
+        userId,
+        expiredAfter,
+        name);
   }
 
   @Override
   public String toString() {
-    return "AccessTokenDto{" + "token='" + token + '\'' + ", name='" + name + '\'' + '}';
+    return "AccessTokenDto{"
+        + "token='"
+        + token
+        + '\''
+        + ", serviceProviderUrl='"
+        + serviceProviderUrl
+        + '\''
+        + ", serviceProviderUserName='"
+        + serviceProviderUserName
+        + '\''
+        + ", serviceProviderUserId='"
+        + serviceProviderUserId
+        + '\''
+        + ", userId='"
+        + userId
+        + '\''
+        + ", expiredAfter='"
+        + expiredAfter
+        + '\''
+        + ", name='"
+        + name
+        + '\''
+        + '}';
   }
 }
