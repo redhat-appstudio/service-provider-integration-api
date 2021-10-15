@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.TestProfile;
 import io.quarkus.vault.runtime.VaultKvManager;
 import io.quarkus.vault.runtime.client.VaultClientException;
 import java.util.HashMap;
@@ -24,28 +25,23 @@ import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.NameGenerator;
+import org.redhat.appstudio.serviceprovider.service.SpiTestProfile;
 import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
-import org.redhat.appstudio.serviceprovider.service.storage.VaultAccessTokenService;
+import org.redhat.appstudio.serviceprovider.service.storage.AccessTokenService;
 import org.redhat.appstudio.serviceprovider.service.storage.VaultKVMapHelper;
 
+@TestProfile(SpiTestProfile.VaultProfile.class)
 @QuarkusTest
 class VaultAccessTokenServiceTest {
 
   @Inject VaultKvManager vaultKvManager;
+  @Inject AccessTokenService service;
 
   private final String vaultPath = "spi/accesstokens";
 
   private final VaultKVMapHelper kvMapHelper = new VaultKVMapHelper();
-
-  VaultAccessTokenService service;
-
-  @BeforeEach
-  public void set() {
-    service = new VaultAccessTokenService(vaultKvManager);
-  }
 
   @AfterEach
   void cleanUp() {

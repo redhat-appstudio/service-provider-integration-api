@@ -14,10 +14,13 @@ package org.redhat.appstudio.serviceprovider.service.storage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.quarkus.test.junit.TestProfile;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.NameGenerator;
+import org.redhat.appstudio.serviceprovider.service.SpiTestProfile;
 
+@TestProfile(SpiTestProfile.NoDockerTestProfile.class)
 class VaultKVMapHelperTest {
 
   private final VaultKVMapHelper helper = new VaultKVMapHelper();
