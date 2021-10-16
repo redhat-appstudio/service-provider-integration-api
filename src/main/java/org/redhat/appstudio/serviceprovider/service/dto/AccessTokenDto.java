@@ -20,8 +20,10 @@ public class AccessTokenDto {
   @NotBlank(message = "Token may not be empty.")
   private String token;
 
-  @Pattern(regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?",
-           message="Token name must not be empty, and may only contain dashes, numbers or lowercase letters.")
+  @Pattern(
+      regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?",
+      message =
+          "Token name must not be empty, and may only contain dashes, numbers or lowercase letters.")
   private String name;
 
   private String serviceProviderUrl;
