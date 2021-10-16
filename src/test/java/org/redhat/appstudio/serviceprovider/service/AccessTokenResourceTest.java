@@ -207,7 +207,8 @@ public class AccessTokenResourceTest {
             .and()
             .body(
                 "parameterViolations[0].message",
-                equalTo("Token name must not be empty, and may only contain dashes, numbers or lowercase letters."))
+                equalTo(
+                    "Token name must not be empty, and may only contain dashes, numbers or lowercase letters."))
             .and()
             .log()
             .all()
