@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.TestProfile;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -33,6 +34,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.dto.AccessTokenDto;
 
+@TestProfile(SpiTestProfile.NoDockerTestProfile.class)
 @QuarkusTest
 public class AccessTokenResourceTest {
 
