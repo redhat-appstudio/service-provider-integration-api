@@ -15,29 +15,28 @@ package org.redhat.appstudio.serviceprovider.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import io.quarkus.test.junit.QuarkusTestProfile;
-
 import java.util.Map;
 import java.util.Set;
 
 public class SpiTestProfile {
-    public static class NoDockerTestProfile implements QuarkusTestProfile {
-        @Override
-        public Set<String> tags() {
-            return ImmutableSet.of("nodocker");
-        }
+  public static class NoDockerTestProfile implements QuarkusTestProfile {
+    @Override
+    public Set<String> tags() {
+      return ImmutableSet.of("nodocker");
+    }
+  }
+
+  public static class VaultProfile implements QuarkusTestProfile {
+
+    @Override
+    public Map<String, String> getConfigOverrides() {
+      return ImmutableMap.of(
+          "spi.backend.type", "vault", "quarkus.vault.devservices.enabled", "true");
     }
 
-    public static class VaultProfile implements QuarkusTestProfile {
-
-        @Override
-        public Map<String, String> getConfigOverrides() {
-            return ImmutableMap.of(
-                    "spi.backend.type", "vault",  "quarkus.vault.devservices.enabled", "true");
-        }
-
-        @Override
-        public Set<String> tags() {
-            return ImmutableSet.of("vault");
-        }
+    @Override
+    public Set<String> tags() {
+      return ImmutableSet.of("vault");
     }
+  }
 }
