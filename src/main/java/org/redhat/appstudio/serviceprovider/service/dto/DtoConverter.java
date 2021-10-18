@@ -16,14 +16,23 @@ import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
 
 public class DtoConverter {
   public static AccessTokenDto asDto(AccessToken accessToken) {
-    return new AccessTokenDto(accessToken.getToken(), accessToken.getName());
+    return new AccessTokenDto()
+        .withToken(accessToken.getToken())
+        .withName(accessToken.getName())
+        .withServiceProviderUrl(accessToken.getServiceProviderUrl())
+        .withServiceProviderUserId(accessToken.getServiceProviderUserId())
+        .withServiceProviderUserName(accessToken.getServiceProviderUserName())
+        .withUserId(accessToken.getUserId())
+        .withExpiredAfter(accessToken.getExpiredAfter());
   }
 
   public static AccessToken asToken(AccessTokenDto accessTokenDto) {
     return new AccessToken(
         accessTokenDto.getToken(),
         accessTokenDto.getName(),
-        "https://github.com",
+        accessTokenDto.getServiceProviderUrl() != null
+            ? accessTokenDto.getServiceProviderUrl()
+            : "https://github.com",
         "jdoe",
         "jd-64839",
         "i-4934",
