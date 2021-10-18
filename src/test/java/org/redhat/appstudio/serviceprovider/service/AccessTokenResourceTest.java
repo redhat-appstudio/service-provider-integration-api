@@ -207,7 +207,8 @@ public class AccessTokenResourceTest {
             .and()
             .body(
                 "parameterViolations[0].message",
-                equalTo("must match \"[a-z0-9]([-a-z0-9]*[a-z0-9])?\""))
+                equalTo(
+                    "Token name must not be empty, and may only contain dashes, numbers or lowercase letters."))
             .and()
             .log()
             .all()
@@ -241,7 +242,7 @@ public class AccessTokenResourceTest {
       assertTrue(parameterViolations != null && parameterViolations.size() > 0);
 
       assertTrue(
-          parameterViolations.get(0).getMessage().equalsIgnoreCase("token may not be blank"));
+          parameterViolations.get(0).getMessage().equalsIgnoreCase("Token may not be empty."));
     } catch (Exception e) {
       fail("Error occurred while testing invalid request", e);
     }
