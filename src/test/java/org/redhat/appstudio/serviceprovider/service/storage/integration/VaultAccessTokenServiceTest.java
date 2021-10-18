@@ -14,6 +14,7 @@ package org.redhat.appstudio.serviceprovider.service.storage.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -23,6 +24,7 @@ import io.quarkus.vault.runtime.client.VaultClientException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import javax.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -114,6 +116,36 @@ class VaultAccessTokenServiceTest {
         fail("Incorrect code status");
       }
     }
+  }
+
+  @Test
+  public void testGetRemovedV2Token() {
+    // Pre-write token
+    final String secretName = NameGenerator.generate("name-", 6);
+    final Map<String, String> tokenMap = tokenAsMap(secretName);
+    vaultKvManager.writeSecret(vaultPath + "/" + secretName, tokenMap);
+    service.delete(secretName);
+
+    Optional<AccessToken> token = service.get(vaultPath + "/" + secretName);
+    assertTrue(token.isEmpty());
+  }
+
+  @Test
+  public void testListAfterRemovedV2Token() {
+    // Pre-write tokens
+    final String secretName1 = NameGenerator.generate("name-", 6);
+    vaultKvManager.writeSecret(vaultPath + "/" + secretName1, tokenAsMap(secretName1));
+
+    final String secretName2 = NameGenerator.generate("name-", 6);
+    vaultKvManager.writeSecret(vaultPath + "/" + secretName2, tokenAsMap(secretName2));
+
+    final String secretName3 = NameGenerator.generate("name-", 6);
+    vaultKvManager.writeSecret(vaultPath + "/" + secretName3, tokenAsMap(secretName3));
+
+    service.delete(secretName2);
+
+    Set<AccessToken> tokens = service.fetchAll();
+    assertEquals(2, tokens.size());
   }
 
   private Map<String, String> tokenAsMap(String name) {
