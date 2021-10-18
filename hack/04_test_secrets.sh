@@ -14,6 +14,6 @@
 
 set -e
 kubectl exec -ti vault-0 -n vault -- vault secrets enable -path=spi kv-v2
-kubectl exec -ti vault-0 -n vault -- vault kv put spi/accesstokens/t-1 token="t1234234" name="sdf342"
-kubectl exec -ti vault-0 -n vault -- vault kv get spi/accesstokens/t-1
+#kubectl exec -ti vault-0 -n vault -- vault kv put spi/accesstokens/t-1 token="t1234234" name="sdf342"
+#kubectl exec -ti vault-0 -n vault -- vault kv get spi/accesstokens/t-1
 

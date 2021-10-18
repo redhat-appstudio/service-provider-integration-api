@@ -21,7 +21,7 @@ kubectl exec -ti vault-0 -n vault -- sh -c 'vault write auth/kubernetes/config \
                                                     kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
                                                     kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
 
-kubectl exec -ti vault-0 -n vault -- sh -c 'echo '"'"'path "spi/data/accesstokens/*" {
+kubectl exec -ti vault-0 -n vault -- sh -c 'echo '"'"'path "spi/*" {
    capabilities = ["create", "read", "update", "delete", "list"]
 }
    '"'"'> /tmp/policy.webapp.hcl'
