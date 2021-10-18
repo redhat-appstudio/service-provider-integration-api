@@ -14,6 +14,7 @@ package org.redhat.appstudio.serviceprovider.service.storage.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -114,6 +115,18 @@ class VaultAccessTokenServiceTest {
         fail("Incorrect code status");
       }
     }
+  }
+
+  @Test
+  public void testGetRemovedV2Token() {
+    // Pre-write token
+    final String secretName = NameGenerator.generate("name-", 6);
+    final Map<String, String> tokenMap = tokenAsMap(secretName);
+    vaultKvManager.writeSecret(vaultPath + "/" + secretName, tokenMap);
+    service.delete(secretName);
+
+    Optional<AccessToken> token = service.get(vaultPath + "/" + secretName);
+    assertTrue(token.isEmpty());
   }
 
   private Map<String, String> tokenAsMap(String name) {

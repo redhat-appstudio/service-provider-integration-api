@@ -15,9 +15,9 @@ package org.redhat.appstudio.serviceprovider.service.storage;
 import io.quarkus.vault.runtime.VaultKvManager;
 import io.quarkus.vault.runtime.client.VaultClientException;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.jboss.logging.Logger;
 
 /** Vault-based implementation of tokens storage. */
@@ -38,9 +38,11 @@ public class VaultAccessTokenService implements AccessTokenService {
   public Set<AccessToken> fetchAll() {
     LOG.debug("fetchAll");
     try {
-      return vaultKvManager.listSecrets(vaultPath).stream()
-          .map(s -> kvMapHelper.fromKVMap(vaultKvManager.readSecret(vaultPath + "/" + s)))
-          .collect(Collectors.toSet());
+      Set<AccessToken> set = new HashSet<>();
+      for (String s : vaultKvManager.listSecrets(vaultPath)) {
+        this.get(s).ifPresent(set::add);
+      }
+      return set;
     } catch (VaultClientException e) {
       return Collections.emptySet();
     }
@@ -51,7 +53,11 @@ public class VaultAccessTokenService implements AccessTokenService {
     try {
       return Optional.of(kvMapHelper.fromKVMap(vaultKvManager.readSecret(vaultPath + "/" + name)));
     } catch (VaultClientException e) {
-      return Optional.empty();
+      if (e.getStatus() == 404) {
+        return Optional.empty();
+      } else {
+        throw e;
+      }
     }
   }
 
