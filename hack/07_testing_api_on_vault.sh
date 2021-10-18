@@ -18,3 +18,5 @@ SPI_URL=$(minikube service  service-provider-integration-api  --url -n vault)
 echo $SPI_URL
 #curl -v $SPI_URL/api/v1/token/vvtoken
 curl -v -d '{"token":"value1", "name":"vvtoken"}' -H "Content-Type: application/json" -X POST $SPI_URL/api/v1/token
+curl -v  $SPI_URL/api/v1/token/vvtoken1
+curl -v  $SPI_URL/api/v1/token/vvtoken

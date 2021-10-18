@@ -27,7 +27,3 @@ kubectl apply -f target/kubernetes/minikube.yml -n vault
 kubectl rollout status deployment/service-provider-integration-api  -n vault
 echo "Unset docker connection to minikube"
 eval "$(minikube docker-env -u)"
-
-#kubectl port-forward  -n vault \
-#    $(kubectl get pod -l app=webapp -n vault -o jsonpath="{.items[0].metadata.name}") \
-#    8080:8080

@@ -32,3 +32,4 @@ kubectl exec -ti vault-0 -n vault -- sh -c 'vault write auth/kubernetes/role/vau
                                                     bound_service_account_namespaces=vault \
                                                     policies=vault-spi-policy \
                                                     ttl=24h'
+
