@@ -7,7 +7,7 @@
 # SPDX-License-Identifier: EPL-2.0
 #
 
-name: build-pr-check
+name: minikube-test-vault-api
 
 on: [push, pull_request]
 
