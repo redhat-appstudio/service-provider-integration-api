@@ -32,7 +32,7 @@ public class SpiTestProfile {
         @Override
         public Map<String, String> getConfigOverrides() {
             return ImmutableMap.of(
-                    "spi.backend.type", "vault", "quarkus.vault.url", "http://vault:8200", "quarkus.vault.devservices.enabled", "true");
+                    "spi.backend.type", "vault",  "quarkus.vault.devservices.enabled", "true");
         }
 
         @Override
