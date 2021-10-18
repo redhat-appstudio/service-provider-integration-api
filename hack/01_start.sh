@@ -19,6 +19,7 @@ echo "Preparing new minikube"
 minikube start --memory=4000mb
 
 kubectl create namespace vault
+helm repo add hashicorp https://helm.releases.hashicorp.com
 helm install vault hashicorp/vault --create-namespace  --namespace vault
 kubectl rollout status deployment/vault-agent-injector -n vault
 while [ "$(kubectl get pods -l app.kubernetes.io/name=vault -n vault -o jsonpath='{.items[*].status.phase}')" != "Running" ]; do
