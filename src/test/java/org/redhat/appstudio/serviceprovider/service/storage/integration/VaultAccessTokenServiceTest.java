@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.NameGenerator;
 import org.redhat.appstudio.serviceprovider.service.SpiTestProfile;
@@ -44,6 +45,7 @@ class VaultAccessTokenServiceTest {
   private final VaultKVMapHelper kvMapHelper = new VaultKVMapHelper();
 
   @AfterEach
+  @BeforeEach
   void cleanUp() {
     vaultKvManager
         .listSecrets(vaultPath)
