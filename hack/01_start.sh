@@ -15,7 +15,7 @@
 set -e
 echo "Preparing new minikube"
 
-minikube stop && minikube delete
+#minikube stop && minikube delete
 minikube start  --cpus 4 --memory=4000mb
 
 kubectl create namespace vault
