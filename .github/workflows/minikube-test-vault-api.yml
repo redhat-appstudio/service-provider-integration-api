@@ -36,7 +36,7 @@ jobs:
         sudo install minikube-linux-amd64 /usr/local/bin/minikube
     - name: Setup minikube cluster
       run: |
-        ./hack/fast_01_06.sh
+        ./scripts/fast_01_06.sh
     - name: Test API
       run: |
-        ./hack/07_testing_api_on_vault.sh
+        ./scripts/07_testing_api_on_vault.sh

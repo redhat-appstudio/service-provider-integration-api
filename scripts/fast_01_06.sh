@@ -21,4 +21,4 @@ cd $SCRIPT_DIR
 ./04_test_secrets.sh
 ./05_setup_kube_auth.sh
 cd ..
-./hack/06_build_and_deploy.sh
+./scripts/06_build_and_deploy.sh
