@@ -16,3 +16,5 @@ set -e
 echo "Enable Vault UI on minikube"
 kubectl patch svc vault -n vault --patch \
   '{"spec": { "type": "NodePort", "ports": [ { "nodePort": 31442, "port": 8200, "protocol": "TCP", "targetPort": 8200 } ] } }'
+VAULT_URL=$(minikube service  vault  --url -n vault)
+echo "Vault UI: "$VAULT_URL
