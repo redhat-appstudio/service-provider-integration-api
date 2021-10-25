@@ -41,7 +41,7 @@ class VaultAccessTokenServiceTest {
   @Inject VaultKvManager vaultKvManager;
   @Inject AccessTokenService service;
 
-  private final String vaultPath = "spi/accesstokens";
+  private final String vaultPath = "accesstokens";
 
   private final VaultKVMapHelper kvMapHelper = new VaultKVMapHelper();
 
