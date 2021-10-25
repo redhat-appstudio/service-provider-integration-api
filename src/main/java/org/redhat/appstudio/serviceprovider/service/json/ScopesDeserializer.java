@@ -26,7 +26,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Helps to deserialize raw set of strings or string array as {@code scopes} field. */
+/**
+ * Helps to deserialize raw set of comma-separated strings or string array as {@code scopes} field.
+ */
 public class ScopesDeserializer extends JsonDeserializer<Set<String>> {
 
   @Override

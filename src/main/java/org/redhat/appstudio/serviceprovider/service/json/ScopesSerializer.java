@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.util.Set;
 
-/** Helps to serialize {@code scopes} field as set of strings. */
+/** Helps to serialize {@code scopes} field as set of comma separated strings. */
 public class ScopesSerializer extends JsonSerializer<Set<String>> {
 
   @Override
