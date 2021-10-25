@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.quarkus.test.junit.TestProfile;
 import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.redhat.appstudio.serviceprovider.service.NameGenerator;
 import org.redhat.appstudio.serviceprovider.service.SpiTestProfile;
@@ -30,7 +31,14 @@ class VaultKVMapHelperTest {
     String tokenValue = NameGenerator.generate("token-", 10);
     AccessToken initialToken =
         new AccessToken(
-            tokenValue, "name", "https://gihtum.com", "user1", "id1", "id1", 1209438182);
+            tokenValue,
+            "name",
+            "https://gihtum.com",
+            "user1",
+            "id1",
+            "id1",
+            1209438182,
+            Set.of("api", "user", "repo"));
     Map<String, String> map = helper.asKVMap(initialToken);
     AccessToken resultToken = helper.fromKVMap(map);
 

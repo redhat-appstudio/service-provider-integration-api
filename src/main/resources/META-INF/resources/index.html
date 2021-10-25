@@ -146,7 +146,8 @@
            var token = {
               token: document.getElementById('t_value').value,
               name: document.getElementById('t_name').value,
-              serviceProviderUrl: document.getElementById('t_url').value
+              serviceProviderUrl: document.getElementById('t_url').value,
+              scopes: document.getElementById('t_scopes').value
            };
            await createToken(token, showError);
            location.reload();
@@ -217,6 +218,12 @@
                   <option value="https://quay.io">Quay</option>
               </select>
           </td>
+        </tr>
+        <tr>
+          <td>
+            Scopes:
+          </td>
+          <td> <input type="text" id="t_scopes"></td>
         </tr>
       <tr>
         <td>
