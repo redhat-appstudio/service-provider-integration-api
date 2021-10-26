@@ -12,9 +12,12 @@
  */
 package org.redhat.appstudio.serviceprovider.service.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Objects;
+import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import org.redhat.appstudio.serviceprovider.service.json.ScopesDeserializer;
 
 public class AccessTokenDto {
   @NotBlank(message = "Token may not be empty.")
@@ -35,6 +38,9 @@ public class AccessTokenDto {
   private String userId;
 
   private Integer expiredAfter;
+
+  @JsonDeserialize(using = ScopesDeserializer.class)
+  private Set<String> scopes;
 
   public AccessTokenDto() {}
 
@@ -134,6 +140,19 @@ public class AccessTokenDto {
     return this;
   }
 
+  public Set<String> getScopes() {
+    return scopes;
+  }
+
+  public void setScopes(Set<String> scopes) {
+    this.scopes = scopes;
+  }
+
+  public AccessTokenDto withScopes(Set<String> scopes) {
+    this.scopes = scopes;
+    return this;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -145,7 +164,8 @@ public class AccessTokenDto {
         && Objects.equals(serviceProviderUserId, that.serviceProviderUserId)
         && Objects.equals(userId, that.userId)
         && Objects.equals(expiredAfter, that.expiredAfter)
-        && Objects.equals(name, that.name);
+        && Objects.equals(name, that.name)
+        && Objects.equals(scopes, that.scopes);
   }
 
   @Override
@@ -157,7 +177,8 @@ public class AccessTokenDto {
         serviceProviderUserId,
         userId,
         expiredAfter,
-        name);
+        name,
+        scopes);
   }
 
   @Override
@@ -183,6 +204,9 @@ public class AccessTokenDto {
         + '\''
         + ", name='"
         + name
+        + '\''
+        + ", scopes='"
+        + scopes
         + '\''
         + '}';
   }

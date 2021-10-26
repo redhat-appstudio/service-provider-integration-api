@@ -12,7 +12,12 @@
  */
 package org.redhat.appstudio.serviceprovider.service.storage;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Objects;
+import java.util.Set;
+import org.redhat.appstudio.serviceprovider.service.json.ScopesDeserializer;
+import org.redhat.appstudio.serviceprovider.service.json.ScopesSerializer;
 
 public class AccessToken {
   private String token;
@@ -23,6 +28,10 @@ public class AccessToken {
   private Integer expiredAfter;
   private String name;
 
+  @JsonDeserialize(using = ScopesDeserializer.class)
+  @JsonSerialize(using = ScopesSerializer.class)
+  private Set<String> scopes;
+
   public AccessToken(
       String token,
       String name,
@@ -30,7 +39,8 @@ public class AccessToken {
       String serviceProviderUserName,
       String serviceProviderUserId,
       String userId,
-      Integer expiredAfter) {
+      Integer expiredAfter,
+      Set<String> scopes) {
     this.token = token;
     this.serviceProviderUrl = serviceProviderUrl;
     this.serviceProviderUserName = serviceProviderUserName;
@@ -38,6 +48,7 @@ public class AccessToken {
     this.userId = userId;
     this.expiredAfter = expiredAfter;
     this.name = name;
+    this.scopes = scopes;
   }
 
   public AccessToken() {}
@@ -98,6 +109,14 @@ public class AccessToken {
     this.name = name;
   }
 
+  public Set<String> getScopes() {
+    return scopes;
+  }
+
+  public void setScopes(Set<String> scopes) {
+    this.scopes = scopes;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -109,7 +128,8 @@ public class AccessToken {
         && Objects.equals(serviceProviderUserId, that.serviceProviderUserId)
         && Objects.equals(userId, that.userId)
         && Objects.equals(expiredAfter, that.expiredAfter)
-        && Objects.equals(name, that.name);
+        && Objects.equals(name, that.name)
+        && Objects.equals(scopes, that.scopes);
   }
 
   @Override
@@ -121,7 +141,8 @@ public class AccessToken {
         serviceProviderUserId,
         userId,
         expiredAfter,
-        name);
+        name,
+        scopes);
   }
 
   @Override
@@ -145,8 +166,8 @@ public class AccessToken {
         + ", expiredAfter='"
         + expiredAfter
         + '\''
-        + ", name='"
-        + name
+        + ", scopes='"
+        + scopes
         + '\''
         + '}';
   }

@@ -12,6 +12,7 @@
  */
 package org.redhat.appstudio.serviceprovider.service.dto;
 
+import java.util.Collections;
 import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
 
 public class DtoConverter {
@@ -23,7 +24,8 @@ public class DtoConverter {
         .withServiceProviderUserId(accessToken.getServiceProviderUserId())
         .withServiceProviderUserName(accessToken.getServiceProviderUserName())
         .withUserId(accessToken.getUserId())
-        .withExpiredAfter(accessToken.getExpiredAfter());
+        .withExpiredAfter(accessToken.getExpiredAfter())
+        .withScopes(accessToken.getScopes());
   }
 
   public static AccessToken asToken(AccessTokenDto accessTokenDto) {
@@ -36,6 +38,7 @@ public class DtoConverter {
         "jdoe",
         "jd-64839",
         "i-4934",
-        1663409036);
+        1663409036,
+        accessTokenDto.getScopes() != null ? accessTokenDto.getScopes() : Collections.emptySet());
   }
 }
