@@ -16,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.common.base.Splitter;
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.TestProfile;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,8 +28,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.redhat.appstudio.serviceprovider.service.SpiTestProfile;
 
-class ScopesSerializerTest {
+@QuarkusTest
+@TestProfile(SpiTestProfile.NoDockerTestProfile.class)
+public class ScopesSerializerTest {
 
   ScopesSerializer scopesSerializer = new ScopesSerializer();
 
@@ -46,7 +50,7 @@ class ScopesSerializerTest {
         Splitter.on(",").splitToStream(captor.getValue()).collect(Collectors.toSet()), input);
   }
 
-  private static Stream<Arguments> serializedData() throws JsonProcessingException {
+  private static Stream<Arguments> serializedData() {
     return Stream.of(
         Arguments.of(Set.of("a", "b", "c")), Arguments.of(Set.of("foo", "bar", "api", "repo")));
   }
