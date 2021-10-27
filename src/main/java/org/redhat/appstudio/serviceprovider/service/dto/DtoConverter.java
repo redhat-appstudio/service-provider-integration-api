@@ -38,7 +38,7 @@ public class DtoConverter {
         "jdoe",
         "jd-64839",
         "i-4934",
-        1663409036,
+        1663409036L,
         accessTokenDto.getScopes() != null ? accessTokenDto.getScopes() : Collections.emptySet());
   }
 }

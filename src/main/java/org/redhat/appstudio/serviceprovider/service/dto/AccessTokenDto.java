@@ -65,7 +65,7 @@ public class AccessTokenDto {
       example = "1635317140530",
       description =
           "Time in milliseconds since January 1, 1970, 00:00:00 GMT when the token will expire.")
-  private Integer expiredAfter;
+  private Long expiredAfter;
 
   @Schema(
       example = "repo, user",
@@ -159,15 +159,15 @@ public class AccessTokenDto {
     return this;
   }
 
-  public Integer getExpiredAfter() {
+  public Long getExpiredAfter() {
     return expiredAfter;
   }
 
-  public void setExpiredAfter(Integer expiredAfter) {
+  public void setExpiredAfter(Long expiredAfter) {
     this.expiredAfter = expiredAfter;
   }
 
-  public AccessTokenDto withExpiredAfter(Integer expiredAfter) {
+  public AccessTokenDto withExpiredAfter(Long expiredAfter) {
     this.expiredAfter = expiredAfter;
     return this;
   }

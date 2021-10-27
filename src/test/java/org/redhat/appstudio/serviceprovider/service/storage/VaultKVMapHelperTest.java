@@ -37,7 +37,7 @@ class VaultKVMapHelperTest {
             "user1",
             "id1",
             "id1",
-            1209438182,
+            diff1209438182L,
             Set.of("api", "user", "repo"));
     Map<String, String> map = helper.asKVMap(initialToken);
     AccessToken resultToken = helper.fromKVMap(map);
