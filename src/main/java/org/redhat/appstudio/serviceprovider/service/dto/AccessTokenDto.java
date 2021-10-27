@@ -13,12 +13,14 @@
 package org.redhat.appstudio.serviceprovider.service.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.redhat.appstudio.serviceprovider.service.json.ScopesDeserializer;
+import org.redhat.appstudio.serviceprovider.service.json.ScopesSerializer;
 
 public class AccessTokenDto {
   @NotBlank(message = "Token may not be empty.")
@@ -34,7 +36,7 @@ public class AccessTokenDto {
       message =
           "Token name must not be empty, and may only contain dashes, numbers or lowercase letters.")
   @Schema(
-      example = "github_token",
+      example = "github-token",
       description =
           "Meaningful token name. Would be used for token referencing. Should be a valid Kubernetes name.")
   private String name;
@@ -72,6 +74,7 @@ public class AccessTokenDto {
       description =
           "OAuth token scopes. Scope is a mechanism in OAuth 2.0 to limit an application's access to a user's account.")
   @JsonDeserialize(using = ScopesDeserializer.class)
+  @JsonSerialize(using = ScopesSerializer.class)
   private Set<String> scopes;
 
   public AccessTokenDto() {}

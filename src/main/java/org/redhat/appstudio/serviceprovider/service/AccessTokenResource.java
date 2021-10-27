@@ -101,6 +101,9 @@ public class AccessTokenResource {
   @APIResponses(
       value = {
         @APIResponse(
+            responseCode = "400",
+            description = "Missed required parameters, parameters are not valid"),
+        @APIResponse(
             responseCode = "201",
             description = "Access token with requested name",
             content =
@@ -127,6 +130,9 @@ public class AccessTokenResource {
 
   @APIResponses(
       value = {
+        @APIResponse(
+            responseCode = "400",
+            description = "Missed required parameters, parameters are not valid"),
         @APIResponse(responseCode = "404", description = "Access token Not Found"),
         @APIResponse(
             responseCode = "200",
