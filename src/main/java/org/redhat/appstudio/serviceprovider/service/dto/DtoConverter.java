@@ -32,9 +32,7 @@ public class DtoConverter {
     return new AccessToken(
         accessTokenDto.getToken(),
         accessTokenDto.getName(),
-        accessTokenDto.getServiceProviderUrl() != null
-            ? accessTokenDto.getServiceProviderUrl()
-            : "https://github.com",
+        accessTokenDto.getServiceProviderUrl(),
         accessTokenDto.getServiceProviderUserName(),
         accessTokenDto.getServiceProviderUserId(),
         accessTokenDto.getUserId(),

@@ -12,6 +12,7 @@
  */
 package org.redhat.appstudio.serviceprovider.service;
 
+import static com.google.common.base.MoreObjects.firstNonNull;
 import static org.redhat.appstudio.serviceprovider.service.dto.DtoConverter.asDto;
 import static org.redhat.appstudio.serviceprovider.service.dto.DtoConverter.asToken;
 
@@ -123,6 +124,13 @@ public class AccessTokenResource {
     if (Strings.isNullOrEmpty(token.getName())) {
       token.setName(NameGenerator.generate("token-", 6));
     }
+
+    // Temporary until proper information expansion.
+    token.setServiceProviderUrl(firstNonNull(token.getServiceProviderUrl(), "https://github.com"));
+    token.setServiceProviderUserName(firstNonNull(token.getServiceProviderUserName(), "jdoe"));
+    token.setServiceProviderUserId(firstNonNull(token.getServiceProviderUserId(), "u-3434653"));
+    token.setExpiredAfter(firstNonNull(token.getExpiredAfter(), 1663409036L));
+
     return Response.status(Response.Status.CREATED)
         .entity(asDto(accessTokenService.create(token)))
         .build();
