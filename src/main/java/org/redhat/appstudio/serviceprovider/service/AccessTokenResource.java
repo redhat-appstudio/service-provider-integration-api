@@ -31,6 +31,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.redhat.appstudio.serviceprovider.service.dto.AccessTokenDto;
 import org.redhat.appstudio.serviceprovider.service.dto.DtoConverter;
 import org.redhat.appstudio.serviceprovider.service.storage.AccessToken;
@@ -40,6 +47,21 @@ import org.redhat.appstudio.serviceprovider.service.storage.AccessTokenService;
 public class AccessTokenResource {
   @Inject AccessTokenService accessTokenService;
 
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "200",
+            description = "All available access tokens",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema =
+                        @Schema(type = SchemaType.ARRAY, implementation = AccessTokenDto.class))),
+        @APIResponse(responseCode = "500", description = "Internal service error")
+      })
+  @Operation(
+      summary = "Get all available access tokens",
+      description = "Get all available access tokens")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Set<AccessTokenDto> fetchAll() {
@@ -48,10 +70,27 @@ public class AccessTokenResource {
         .collect(Collectors.toSet());
   }
 
+  @APIResponses(
+      value = {
+        @APIResponse(responseCode = "404", description = "Access token Not Found"),
+        @APIResponse(
+            responseCode = "200",
+            description = "Access token with requested name",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AccessTokenDto.class))),
+        @APIResponse(responseCode = "500", description = "Internal service error")
+      })
+  @Operation(
+      summary = "Get specific access token by name",
+      description = "Get specific access token by name")
   @GET
   @Path("{name}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response get(@PathParam("name") String name) {
+  public Response get(
+      @Parameter(description = "Access token name", required = true) @PathParam("name")
+          String name) {
     Optional<AccessTokenDto> token = accessTokenService.get(name).map(DtoConverter::asDto);
     if (token.isEmpty()) {
       return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,11 +98,25 @@ public class AccessTokenResource {
     return Response.ok().entity(token.get()).build();
   }
 
+  @APIResponses(
+      value = {
+        @APIResponse(
+            responseCode = "201",
+            description = "Access token with requested name",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AccessTokenDto.class))),
+        @APIResponse(responseCode = "500", description = "Internal service error")
+      })
+  @Operation(summary = "Create access token", description = "Create access token")
   @POST
   @Produces(MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response create(@Valid AccessTokenDto accessToken) {
-    AccessToken token = asToken(accessToken);
+  public Response create(
+      @Parameter(description = "Access token", required = true) @Valid
+          AccessTokenDto accessTokenDto) {
+    AccessToken token = asToken(accessTokenDto);
     if (Strings.isNullOrEmpty(token.getName())) {
       token.setName(NameGenerator.generate("token-", 6));
     }
@@ -72,19 +125,45 @@ public class AccessTokenResource {
         .build();
   }
 
+  @APIResponses(
+      value = {
+        @APIResponse(responseCode = "404", description = "Access token Not Found"),
+        @APIResponse(
+            responseCode = "200",
+            description = "Updated access token/",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AccessTokenDto.class))),
+        @APIResponse(responseCode = "500", description = "Internal service error")
+      })
+  @Operation(
+      summary = "Update specific access token by name",
+      description = "Update specific access token by name")
   @PUT
   @Path("/{name}")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response update(@PathParam("name") String name, AccessToken accessToken) {
-    if (!name.equals(accessToken.getName())) {
+  public Response update(
+      @Parameter(description = "Access token name", required = true) @PathParam("name") String name,
+      AccessTokenDto accessTokenDto) {
+    if (!name.equals(accessTokenDto.getName())) {
       return Response.status(Response.Status.BAD_REQUEST)
           .entity("Token name is not matched path parameter")
           .build();
     }
-    accessTokenService.update(name, accessToken);
-    return Response.ok().entity(accessToken).build();
+    accessTokenService.update(name, asToken(accessTokenDto));
+    return Response.ok().entity(accessTokenDto).build();
   }
 
+  @APIResponses(
+      value = {
+        @APIResponse(responseCode = "404", description = "Access token Not Found"),
+        @APIResponse(responseCode = "204", description = "Access token deleted successfully"),
+        @APIResponse(responseCode = "500", description = "Internal service error")
+      })
+  @Operation(
+      summary = "Delete specific access token by name",
+      description = "Delete specific access token by name")
   @DELETE
   @Path("/{name}")
   public Response delete(@PathParam("name") String name) {

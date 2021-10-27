@@ -17,28 +17,60 @@ import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.redhat.appstudio.serviceprovider.service.json.ScopesDeserializer;
 
 public class AccessTokenDto {
   @NotBlank(message = "Token may not be empty.")
+  @Schema(
+      required = true,
+      description =
+          "OAuth token or Personal access tokens. (PATs) are an alternative to using passwords for authentication.",
+      example = "ghp_szs_this_is_an_example_3459Eh24545ccqJstwW14545BD4545T15454")
   private String token;
 
   @Pattern(
       regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?",
       message =
           "Token name must not be empty, and may only contain dashes, numbers or lowercase letters.")
+  @Schema(
+      example = "github_token",
+      description =
+          "Meaningful token name. Would be used for token referencing. Should be a valid Kubernetes name.")
   private String name;
 
+  @Schema(
+      example = "github.com",
+      description = "Url of service provider. Available options: github.com, quay.io.")
   private String serviceProviderUrl;
 
+  @Schema(
+      example = "jdoe",
+      description =
+          "User name associated with token and registered in service provider's database.")
   private String serviceProviderUserName;
 
+  @Schema(
+      example = "id-234346456",
+      description = "User id associated with token and registered in service provider's database.")
   private String serviceProviderUserId;
 
+  @Schema(
+      example = "usr-234346456",
+      description =
+          "User id associated with token and registered in service provider integration database.")
   private String userId;
 
+  @Schema(
+      example = "1635317140530",
+      description =
+          "Time in milliseconds since January 1, 1970, 00:00:00 GMT when the token will expire.")
   private Integer expiredAfter;
 
+  @Schema(
+      example = "repo, user",
+      description =
+          "OAuth token scopes. Scope is a mechanism in OAuth 2.0 to limit an application's access to a user's account.")
   @JsonDeserialize(using = ScopesDeserializer.class)
   private Set<String> scopes;
 
