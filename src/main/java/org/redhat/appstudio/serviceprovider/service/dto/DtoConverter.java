@@ -35,10 +35,10 @@ public class DtoConverter {
         accessTokenDto.getServiceProviderUrl() != null
             ? accessTokenDto.getServiceProviderUrl()
             : "https://github.com",
-        "jdoe",
-        "jd-64839",
-        "i-4934",
-        1663409036L,
+        accessTokenDto.getServiceProviderUserName(),
+        accessTokenDto.getServiceProviderUserId(),
+        accessTokenDto.getUserId(),
+        accessTokenDto.getExpiredAfter(),
         accessTokenDto.getScopes() != null ? accessTokenDto.getScopes() : Collections.emptySet());
   }
 }
