@@ -120,6 +120,12 @@ public class AccessTokenResource {
   public Response create(
       @Parameter(description = "Access token", required = true) @Valid
           AccessTokenDto accessTokenDto) {
+    Optional<AccessToken> existed = accessTokenService.get(accessTokenDto.getName());
+    if (existed.isPresent()) {
+      return Response.status(Response.Status.CONFLICT)
+          .entity(String.format("Token with name %s already exists", accessTokenDto.getName()))
+          .build();
+    }
     AccessToken token = asToken(accessTokenDto);
     if (Strings.isNullOrEmpty(token.getName())) {
       token.setName(NameGenerator.generate("token-", 6));

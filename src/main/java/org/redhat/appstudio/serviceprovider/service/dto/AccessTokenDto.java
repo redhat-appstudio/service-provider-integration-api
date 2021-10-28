@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 public class AccessTokenDto {
@@ -66,7 +67,8 @@ public class AccessTokenDto {
   private Long expiredAfter;
 
   @Schema(
-      example = "repo, user",
+      type = SchemaType.ARRAY,
+      example = "[\"repo\", \"user\"]",
       description =
           "OAuth token scopes. Scope is a mechanism in OAuth 2.0 to limit an application's access to a user's account.")
   private Set<String> scopes;

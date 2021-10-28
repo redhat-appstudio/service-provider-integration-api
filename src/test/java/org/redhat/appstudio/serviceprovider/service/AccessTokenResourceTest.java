@@ -155,6 +155,21 @@ public class AccessTokenResourceTest {
   }
 
   @Test
+  public void test_Conflict() throws Exception {
+
+    AccessTokenDto token = prepareAccessToken(NameGenerator.generate("accesstoken-", 3));
+    postAccessTokenDto(token);
+
+    postAccessTokenDto(token)
+        .then()
+        .assertThat()
+        .spec(prepareResponseSpec(409))
+        .and()
+        .assertThat()
+        .body(equalTo("Token with name " + token.getName() + " already exists"));
+  }
+
+  @Test
   public void test_deleteCatalogueItem() throws Exception {
     // Create Catalogue Item
     AccessTokenDto token = prepareAccessToken(NameGenerator.generate("accesstoken-", 3));
