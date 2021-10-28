@@ -102,15 +102,16 @@ public class AccessTokenResource {
   @APIResponses(
       value = {
         @APIResponse(
-            responseCode = "400",
-            description = "Missed required parameters, parameters are not valid"),
-        @APIResponse(
             responseCode = "201",
             description = "Access token with requested name",
             content =
                 @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = AccessTokenDto.class))),
+        @APIResponse(
+            responseCode = "400",
+            description = "Missed required parameters, parameters are not valid"),
+        @APIResponse(responseCode = "409", description = "Token with same name already exists"),
         @APIResponse(responseCode = "500", description = "Internal service error")
       })
   @Operation(summary = "Create access token", description = "Create access token")
@@ -186,7 +187,12 @@ public class AccessTokenResource {
       description = "Delete specific access token by name")
   @DELETE
   @Path("/{name}")
-  public Response delete(@PathParam("name") String name) {
+  public Response delete(
+      @Parameter(description = "Access token name", required = true) @PathParam("name")
+          String name) {
+    if (accessTokenService.get(name).isEmpty()) {
+      return Response.status(Response.Status.NOT_FOUND).build();
+    }
     accessTokenService.delete(name);
     return Response.status(Response.Status.NO_CONTENT)
         .entity("Token deleted successfully !!")

@@ -195,6 +195,20 @@ public class AccessTokenResourceTest {
   }
 
   @Test
+  public void test_deleteAnd404() throws Exception {
+    // Create Catalogue Item
+
+    // Delete Catalogue Item
+    given()
+        .pathParam("name", NameGenerator.generate("accesstoken-", 3))
+        .when()
+        .delete("api/v1/token/{name}")
+        .then()
+        .assertThat()
+        .spec(prepareResponseSpec(404));
+  }
+
+  @Test
   public void test_resourceNotFound() {
     given()
         .pathParam("name", NameGenerator.generate("accesstoken-", 3))
@@ -213,8 +227,6 @@ public class AccessTokenResourceTest {
     Response response =
         postAccessTokenDto(token)
             .then()
-            .log()
-            .all()
             .assertThat()
             .spec(prepareResponseSpec(400))
             .and()
@@ -225,8 +237,6 @@ public class AccessTokenResourceTest {
                 equalTo(
                     "Token name must not be empty, and may only contain dashes, numbers or lowercase letters."))
             .and()
-            .log()
-            .all()
             .extract()
             .response();
   }
@@ -270,8 +280,6 @@ public class AccessTokenResourceTest {
   private Response postAccessTokenDto(AccessTokenDto accessTokenDto) throws Exception {
     RequestSpecification request =
         given()
-            .log()
-            .all()
             .contentType("application/json")
             .header("Accept-Language", "en-US")
             .body(accessTokenDto);
