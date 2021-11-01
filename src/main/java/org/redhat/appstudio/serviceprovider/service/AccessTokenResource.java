@@ -110,7 +110,7 @@ public class AccessTokenResource {
                     schema = @Schema(implementation = AccessTokenDto.class))),
         @APIResponse(
             responseCode = "400",
-            description = "Missed required par  ameters, parameters are not valid"),
+            description = "Missed required parameters, parameters are not valid"),
         @APIResponse(responseCode = "409", description = "Token with same name already exists"),
         @APIResponse(responseCode = "500", description = "Internal service error")
       })
