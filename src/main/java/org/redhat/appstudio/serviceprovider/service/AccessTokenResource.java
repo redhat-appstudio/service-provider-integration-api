@@ -103,14 +103,14 @@ public class AccessTokenResource {
       value = {
         @APIResponse(
             responseCode = "201",
-            description = "Access token with requested name",
+            description = "Access token with the requested name",
             content =
                 @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = AccessTokenDto.class))),
         @APIResponse(
             responseCode = "400",
-            description = "Missed required parameters, parameters are not valid"),
+            description = "Missed required par  ameters, parameters are not valid"),
         @APIResponse(responseCode = "409", description = "Token with same name already exists"),
         @APIResponse(responseCode = "500", description = "Internal service error")
       })
@@ -151,7 +151,7 @@ public class AccessTokenResource {
         @APIResponse(responseCode = "404", description = "Access token Not Found"),
         @APIResponse(
             responseCode = "200",
-            description = "Updated access token/",
+            description = "Updated access token",
             content =
                 @Content(
                     mediaType = "application/json",
