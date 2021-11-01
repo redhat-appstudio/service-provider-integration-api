@@ -147,7 +147,8 @@
               token: document.getElementById('t_value').value,
               name: document.getElementById('t_name').value,
               serviceProviderUrl: document.getElementById('t_url').value,
-              scopes: document.getElementById('t_scopes').value
+              scopes: document.getElementById('t_scopes').value,
+              serviceProviderUserName: document.getElementById('t_username').value
            };
            await createToken(token, showError);
            location.reload();
@@ -221,9 +222,20 @@
         </tr>
         <tr>
           <td>
+            Service Provider Username:
+          </td>
+          <td>
+            <input type="text" id="t_username">
+          </td>
+        </tr>
+        <tr>
+        <tr>
+          <td>
             Scopes:
           </td>
-          <td> <input type="text" id="t_scopes"></td>
+          <td>
+            <input type="text" id="t_scopes">
+          </td>
         </tr>
       <tr>
         <td>

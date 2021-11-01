@@ -35,7 +35,9 @@ public class DtoConverter {
         accessTokenDto.getServiceProviderUrl() != null
             ? accessTokenDto.getServiceProviderUrl()
             : "https://github.com",
-        "jdoe",
+        accessTokenDto.getServiceProviderUserName() != null
+            ? accessTokenDto.getServiceProviderUserName()
+            : "jdoe",
         "jd-64839",
         "i-4934",
         1663409036,
