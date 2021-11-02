@@ -25,7 +25,7 @@ public class AccessToken {
   private String serviceProviderUserName;
   private String serviceProviderUserId;
   private String userId;
-  private Integer expiredAfter;
+  private Long expiredAfter;
   private String name;
 
   @JsonDeserialize(using = ScopesDeserializer.class)
@@ -39,7 +39,7 @@ public class AccessToken {
       String serviceProviderUserName,
       String serviceProviderUserId,
       String userId,
-      Integer expiredAfter,
+      Long expiredAfter,
       Set<String> scopes) {
     this.token = token;
     this.serviceProviderUrl = serviceProviderUrl;
@@ -93,11 +93,11 @@ public class AccessToken {
     this.userId = userId;
   }
 
-  public Integer getExpiredAfter() {
+  public Long getExpiredAfter() {
     return expiredAfter;
   }
 
-  public void setExpiredAfter(Integer expiredAfter) {
+  public void setExpiredAfter(Long expiredAfter) {
     this.expiredAfter = expiredAfter;
   }
 

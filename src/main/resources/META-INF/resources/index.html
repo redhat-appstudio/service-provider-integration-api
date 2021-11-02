@@ -147,7 +147,7 @@
               token: document.getElementById('t_value').value,
               name: document.getElementById('t_name').value,
               serviceProviderUrl: document.getElementById('t_url').value,
-              scopes: document.getElementById('t_scopes').value,
+              scopes: document.getElementById('t_scopes').value.split(',').map(function(s) { return String.prototype.trim.apply(s); }).filter(function(el) {return el.length != 0}),
               serviceProviderUserName: document.getElementById('t_username').value
            };
            await createToken(token, showError);
