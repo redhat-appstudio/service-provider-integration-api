@@ -1,4 +1,6 @@
 # sp-service
+[![Sonar](https://github.com/redhat-appstudio/service-provider-integration-api/actions/workflows/sonar.yaml/badge.svg)](https://github.com/redhat-appstudio/service-provider-integration-api/actions/workflows/sonar.yaml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=service-provider-integration-api-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=service-provider-integration-api-service)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
