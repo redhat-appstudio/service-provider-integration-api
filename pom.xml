@@ -35,7 +35,7 @@
         <version.enforcer.plugin>3.0.0-M3</version.enforcer.plugin>
         <version.fmt.plugin>2.12</version.fmt.plugin>
         <version.license-maven-plugin>4.1</version.license-maven-plugin>
-        <version.sortpom.plugin>3.0.0</version.sortpom.plugin>
+        <version.sortpom.plugin>3.0.1</version.sortpom.plugin>
     </properties>
     <dependencyManagement>
         <dependencies>
